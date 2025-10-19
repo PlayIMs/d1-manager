@@ -11,12 +11,17 @@
 	}
 
 	const plugins = {
-		["table-browser"]: () => import("$lib/plugin/TableBrowser.svelte"),
 		["run-query"]: () => import("$lib/plugin/RunQuery.svelte"),
 		["semantic-query"]: () => import("$lib/plugin/SemanticQuery.svelte"),
 		["add-record"]: () => import("$lib/plugin/AddRecord.svelte"),
 		["csv"]: () => import("$lib/plugin/CSV.svelte"),
 	};
+
+	// Always load TableBrowser
+	let TableBrowserComponent: ConstructorOfATypedSvelteComponent | undefined;
+	import("$lib/plugin/TableBrowser.svelte").then((m) => {
+		TableBrowserComponent = m.default;
+	});
 
 	let plugin: keyof typeof plugins | undefined;
 	let PluginComponent: ConstructorOfATypedSvelteComponent | undefined;
@@ -100,6 +105,7 @@
 				bind:value={plugin}
 				on:click={preload_plugins}
 			>
+				<option value="">Select a tool...</option>
 				{#each Object.keys(plugins) as name}
 					<option value={name}>{$t(`plugin.${name}.name`)}</option>
 				{/each}
@@ -112,6 +118,22 @@
 					database={$page.params.database}
 					table={$page.params.table}
 				/>
+			{/if}
+
+			<!-- Always show TableBrowser below other plugins -->
+			{#if TableBrowserComponent}
+				<div class="divider"></div>
+				<div class="card bg-base-100">
+					<div class="card-body">
+						<h3 class="card-title">{$t("plugin.table-browser.name")}</h3>
+						<svelte:component
+							this={TableBrowserComponent}
+							{data}
+							database={$page.params.database}
+							table={$page.params.table}
+						/>
+					</div>
+				</div>
 			{/if}
 		</div>
 	</div>
