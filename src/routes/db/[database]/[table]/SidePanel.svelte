@@ -53,6 +53,20 @@
 							{#each table.columns as column}
 								<p class:font-bold={column.pk}>
 									{column.name} <span class="opacity-50">{column.type}</span>
+									{#if table.foreign_keys}
+										{@const column_fks = table.foreign_keys.filter(
+											(fk) => fk.from === column.name,
+										)}
+										{#if column_fks.length > 0}
+											<div class="mt-1 flex flex-wrap gap-1">
+												{#each column_fks as fk}
+													<div class="badge badge-outline badge-xs">
+														{fk.table}.{fk.to}
+													</div>
+												{/each}
+											</div>
+										{/if}
+									{/if}
 								</p>
 							{/each}
 						</div>
