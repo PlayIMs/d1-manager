@@ -1,5 +1,6 @@
 {
 	"col-default": "预设值",
+	"col-foreign-keys": "外键",
 	"col-name": "栏位",
 	"col-type": "型别",
 	"d1-manager": {

@@ -1,5 +1,6 @@
 {
 	"col-default": "Default",
+	"col-foreign-keys": "Foreign Keys",
 	"col-name": "Name",
 	"col-type": "Type",
 	"d1-manager": {

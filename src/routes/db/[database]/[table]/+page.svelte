@@ -61,6 +61,7 @@
 								<th>{$t("col-name")}</th>
 								<th>{$t("col-type")}</th>
 								<th>{$t("col-default")}</th>
+								<th>{$t("col-foreign-keys")}</th>
 							</tr>
 						</thead>
 						<tbody>
@@ -69,6 +70,22 @@
 									<td>{column.name}</td>
 									<td>{column.type}</td>
 									<td>{column.dflt_value}</td>
+									<td>
+										{#if meta.foreign_keys}
+											{@const column_fks = meta.foreign_keys.filter(
+												(fk) => fk.from === column.name,
+											)}
+											{#if column_fks.length > 0}
+												<div class="flex flex-col gap-1">
+													{#each column_fks as fk}
+														<div class="badge badge-outline badge-sm">
+															{fk.table}.{fk.to}
+														</div>
+													{/each}
+												</div>
+											{/if}
+										{/if}
+									</td>
 								</tr>
 							{/each}
 						</tbody>

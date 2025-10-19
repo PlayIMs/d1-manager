@@ -55,16 +55,36 @@ export const GET: RequestHandler = async ({ params, locals, url, fetch, platform
 		}),
 	);
 
+	const _foreign_keys = db.batch(
+		results.map(({ name }) => {
+			return db.prepare(`PRAGMA foreign_key_list(\`${name}\`)`);
+		}),
+	);
+
 	const columns = (await _columns).map(
 		({ results }) => results as { name: string; type: string }[],
 	);
 	const count = (await _count).map(({ results }) => results?.[0].c);
+	const foreign_keys = (await _foreign_keys).map(
+		({ results }) =>
+			results as {
+				id: number;
+				seq: number;
+				table: string;
+				from: string;
+				to: string;
+				on_update: string;
+				on_delete: string;
+				match: string;
+			}[],
+	);
 
 	const response = results
 		.map(({ name }, i) => ({
 			name,
 			columns: columns[i],
 			count: count[i],
+			foreign_keys: foreign_keys[i],
 		}))
 		.sort(({ name: a }, { name: b }) => {
 			if (a.startsWith("sqlite_") && !b.startsWith("sqlite_")) {

@@ -1,5 +1,6 @@
 {
 	"col-default": "Por Defecto",
+	"col-foreign-keys": "Claves Foráneas",
 	"col-name": "Nombre",
 	"col-type": "Tipo",
 	"d1-manager": {

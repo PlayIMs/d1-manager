@@ -1,5 +1,6 @@
 {
 	"col-default": "デフォルト値",
+	"col-foreign-keys": "外部キー",
 	"col-name": "列名",
 	"col-type": "型",
 	"d1-manager": {
